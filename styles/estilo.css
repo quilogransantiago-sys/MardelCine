@@ -720,22 +720,29 @@ img {
     content: var(--nombre-productora);
 }
 
-.footer-redes-texto {
-    font-size: 0.85rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-texto-secundario);
-    opacity: 0.6;
+.footer-redes {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 
-.footer-email {
+.footer-icono {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--color-footer-texto);
-    font-size: 0.9rem;
-    transition: color var(--transicion-suave);
+    transition: all var(--transicion-suave);
 }
 
-.footer-email:hover {
+.footer-icono:hover {
+    border-color: var(--color-secundario);
     color: var(--color-secundario);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 .footer-linea {
@@ -855,6 +862,7 @@ img {
     .footer-grid {
         flex-direction: column;
         gap: 1.5rem;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
     }
 }
