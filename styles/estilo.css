@@ -1,0 +1,854 @@
+/*
+ * estilo.css — Estilos de "Mar del Cine" (modo oscuro único)
+ * -----------------------------------------------------------
+ * Propósito: Apariencia cinematográfica oscura, cómoda visualmente,
+ * con estética "próximamente". Sin Google Fonts, system fonts nativas.
+ *
+ * Variables configurables:
+ *   --nombre-productora: "Mar del Cine"
+ *   --color-primario, --color-secundario, etc.
+ */
+
+/* ========== VARIABLES CSS (MODO OSCURO ÚNICO) ========== */
+:root {
+    /* --- Colores --- */
+    --color-fondo: #0e1217;
+    /* Gris azulado muy oscuro */
+    --color-texto: #d4d2ca;
+    /* Blanco roto, cómodo */
+    --color-texto-secundario: #8a8880;
+    /* Gris medio */
+    --color-primario: #1c2d3a;
+    /* Azul marino oscuro */
+    --color-secundario: #c8a052;
+    /* Dorado costero */
+    --color-acento: #3b6b82;
+    /* Azul oceánico */
+    --color-superficie: #161b22;
+    /* Tarjetas y superficies */
+    --color-borde: #252a33;
+    /* Bordes sutiles */
+    --color-hero-overlay: rgba(0, 0, 0, 0.5);
+    --color-sombra: rgba(0, 0, 0, 0.4);
+    --color-footer: #090c10;
+    /* Footer aún más oscuro */
+    --color-footer-texto: #9a988f;
+    --color-badge: rgba(200, 160, 82, 0.12);
+    /* Fondo badge */
+    --color-badge-texto: #c8a052;
+
+    /* --- Tipografía (system font stack) --- */
+    --fuente-titulos: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --fuente-cuerpo: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* --- Espaciado --- */
+    --padding-seccion: 5rem 5vw;
+    --padding-movil: 3rem 1.5rem;
+    --gap-tarjetas: 2rem;
+    --radio-borde: 4px;
+    --radio-boton: 4px;
+
+    /* --- Transiciones --- */
+    --transicion-suave: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transicion-lenta: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* --- Nombre editable --- */
+    --nombre-productora: "Mar del Cine";
+}
+
+/* ========== RESET & BASE ========== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--fuente-cuerpo);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+
+/* ========== GRANO DE CINE (NOISE) ========== */
+/* Capa sutil de ruido sobre todo el fondo, estilo película */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+}
+
+/* ========== TIPOGRAFÍA ========== */
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--fuente-titulos);
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+}
+
+h2 {
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+}
+
+h3 {
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ========== UTILIDADES ========== */
+.revelar {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity var(--transicion-lenta), transform var(--transicion-lenta);
+}
+
+.revelar.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.desde-izquierda {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity var(--transicion-lenta), transform var(--transicion-lenta);
+}
+
+.desde-izquierda.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.desde-derecha {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity var(--transicion-lenta), transform var(--transicion-lenta);
+}
+
+.desde-derecha.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ========== BADGE "PRÓXIMAMENTE" ========== */
+.badge-proximamente {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1.2rem;
+    background: var(--color-badge);
+    color: var(--color-badge-texto);
+    border: 1px solid rgba(200, 160, 82, 0.25);
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    animation: pulsoBadge 3s ease-in-out infinite;
+}
+
+@keyframes pulsoBadge {
+
+    0%,
+    100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ========== HEADER ========== */
+.sitio-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    padding: 1.2rem 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color var(--transicion-suave), padding var(--transicion-suave), box-shadow var(--transicion-suave);
+}
+
+.sitio-header.con-fondo {
+    background-color: rgba(14, 18, 23, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.4);
+    padding: 0.8rem 5vw;
+}
+
+.sitio-header.con-fondo .nombre-productora,
+.sitio-header.con-fondo .nombre-movil {
+    color: var(--color-texto);
+}
+
+.sitio-header.con-fondo .sitio-nav a {
+    color: var(--color-texto-secundario);
+}
+
+.sitio-header.con-fondo .sitio-nav a:hover,
+.sitio-header.con-fondo .sitio-nav a.activo {
+    color: var(--color-texto);
+}
+
+.sitio-header.con-fondo .menu-toggle span {
+    background: var(--color-texto);
+}
+
+/* Logo */
+.logo-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.logo-header {
+    display: block;
+    width: auto;
+    height: 32px;
+    max-height: 32px;
+    max-width: 100px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.nombre-productora {
+    font-family: var(--fuente-titulos);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #1a1a1a;
+}
+
+.nombre-productora::before {
+    content: var(--nombre-productora);
+}
+
+.nombre-desktop {
+    display: inline;
+}
+
+.nombre-movil {
+    display: none;
+}
+
+/* Navegación */
+.sitio-nav {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+}
+
+.sitio-nav a {
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    position: relative;
+    padding: 0.3rem 0;
+    transition: color var(--transicion-suave);
+}
+
+.sitio-nav a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--color-secundario);
+    transition: width var(--transicion-suave);
+}
+
+.sitio-nav a:hover,
+.sitio-nav a.activo {
+    color: #000000;
+}
+
+.sitio-nav a:hover::after,
+.sitio-nav a.activo::after {
+    width: 100%;
+}
+
+/* Menú hamburguesa */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    z-index: 1001;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: #1a1a1a;
+    transition: all var(--transicion-suave);
+}
+
+/* ========== HERO ========== */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-fondo {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, #1a2d3a 0%, var(--color-fondo) 70%);
+    z-index: 0;
+}
+
+.hero-imagen {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero-patron {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, transparent 0%, var(--color-hero-overlay) 100%),
+        repeating-linear-gradient(45deg,
+            transparent,
+            transparent 3px,
+            rgba(255, 255, 255, 0.008) 3px,
+            rgba(255, 255, 255, 0.008) 6px);
+    z-index: 1;
+}
+
+.hero-contenido {
+    position: relative;
+    z-index: 2;
+    color: #ffffff;
+    max-width: 900px;
+    padding: 2rem;
+}
+
+.hero-logo {
+    display: block;
+    width: auto;
+    height: 150px;
+    max-height: 150px;
+    max-width: 400px;
+    object-fit: contain;
+    margin: 0 auto 1.8rem;
+    opacity: 0;
+    animation: heroFadeIn 1.2s 0.1s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.hero-titulo {
+    font-family: var(--fuente-titulos);
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 1rem;
+    animation: heroFadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.hero-linea {
+    width: 0;
+    height: 1.5px;
+    background: var(--color-secundario);
+    margin: 1.5rem auto;
+    animation: lineaExpandir 1s 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.hero-subtitulo {
+    font-family: var(--fuente-cuerpo);
+    font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+    opacity: 0;
+    animation: heroFadeIn 1.2s 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.hero-badge {
+    margin-top: 1.8rem;
+    opacity: 0;
+    animation: heroFadeIn 1.2s 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: rebotar 2.5s infinite;
+    cursor: pointer;
+}
+
+@keyframes heroFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes lineaExpandir {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100px;
+    }
+}
+
+@keyframes rebotar {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(8px);
+    }
+}
+
+/* ========== SECCIONES GENERALES ========== */
+.seccion {
+    padding: var(--padding-seccion);
+    width: 100%;
+}
+
+.seccion-titulo {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.seccion-titulo h2 {
+    display: inline-block;
+    position: relative;
+}
+
+.seccion-titulo h2::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 1.5px;
+    background: var(--color-secundario);
+    margin: 0.7rem auto 0;
+    transition: width var(--transicion-lenta);
+}
+
+.seccion:hover .seccion-titulo h2::after {
+    width: 80px;
+}
+
+/* ========== QUIÉNES SOMOS ========== */
+.quienes-grid {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+    max-width: 100%;
+}
+
+.quienes-texto {
+    flex: 1;
+    position: relative;
+}
+
+.quienes-texto p {
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+    color: var(--color-texto-secundario);
+}
+
+
+.quienes-imagen {
+    flex: 1;
+    min-height: 400px;
+    border-radius: var(--radio-borde);
+    background: linear-gradient(150deg, var(--color-primario) 0%, #0a1520 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--color-borde);
+}
+
+.quienes-imagen::before {
+    content: "Imagen próximamente";
+    color: rgba(255, 255, 255, 0.2);
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+}
+
+/* ========== PROYECTOS ========== */
+.proyectos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap-tarjetas);
+    width: 100%;
+}
+
+.tarjeta-proyecto {
+    background: var(--color-superficie);
+    border-radius: var(--radio-borde);
+    overflow: hidden;
+    border: 1px solid var(--color-borde);
+    transition: transform var(--transicion-suave), box-shadow var(--transicion-suave), border-color var(--transicion-suave);
+    cursor: default;
+    position: relative;
+}
+
+.tarjeta-proyecto:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border-color: rgba(200, 160, 82, 0.25);
+}
+
+.tarjeta-imagen {
+    width: 100%;
+    height: 260px;
+    background: linear-gradient(150deg, var(--color-primario) 0%, #0a1520 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tarjeta-imagen::before {
+    content: "🎬";
+    font-size: 2.5rem;
+    opacity: 0.15;
+    filter: grayscale(1);
+}
+
+/* Overlay "En producción" */
+.tarjeta-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transicion-suave);
+}
+
+.tarjeta-proyecto:hover .tarjeta-overlay {
+    opacity: 1;
+}
+
+.tarjeta-overlay span {
+    color: var(--color-secundario);
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid rgba(200, 160, 82, 0.4);
+    padding: 0.6rem 1.5rem;
+    border-radius: 2rem;
+}
+
+.tarjeta-info {
+    padding: 1.5rem;
+}
+
+.tarjeta-categoria {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-secundario);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.tarjeta-titulo {
+    font-family: var(--fuente-titulos);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.tarjeta-ano {
+    font-size: 0.85rem;
+    color: var(--color-texto-secundario);
+}
+
+/* ========== CONTACTO (SOLO EMAIL) ========== */
+.contacto-contenido {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contacto-contenido p {
+    color: var(--color-texto-secundario);
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+}
+
+.contacto-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 2rem;
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-boton);
+    font-size: 1.05rem;
+    color: var(--color-texto);
+    transition: border-color var(--transicion-suave), box-shadow var(--transicion-suave);
+}
+
+.contacto-email:hover {
+    border-color: var(--color-secundario);
+    box-shadow: 0 0 0 3px rgba(200, 160, 82, 0.1);
+}
+
+.contacto-email .icono-email {
+    color: var(--color-secundario);
+    font-size: 1.1rem;
+}
+
+.contacto-badge {
+    margin-top: 1.5rem;
+}
+
+/* ========== FOOTER ========== */
+.sitio-footer {
+    background: var(--color-footer);
+    color: var(--color-footer-texto);
+    padding: 4rem 5vw 2rem;
+    width: 100%;
+}
+
+.footer-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+}
+
+.footer-marca {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.footer-logo-img {
+    display: block;
+    width: auto;
+    height: 32px;
+    max-height: 32px;
+    max-width: 100px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.footer-nombre {
+    font-family: var(--fuente-titulos);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--color-texto);
+}
+
+.footer-nombre::before {
+    content: var(--nombre-productora);
+}
+
+.footer-redes-texto {
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-texto-secundario);
+    opacity: 0.6;
+}
+
+.footer-email {
+    color: var(--color-footer-texto);
+    font-size: 0.9rem;
+    transition: color var(--transicion-suave);
+}
+
+.footer-email:hover {
+    color: var(--color-secundario);
+}
+
+.footer-linea {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 1.5rem;
+}
+
+.footer-copyright {
+    text-align: center;
+    font-size: 0.8rem;
+    opacity: 0.35;
+}
+
+/* ========== RESPONSIVE: TABLET (≤1024px) ========== */
+@media (max-width: 1024px) {
+    .proyectos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .quienes-grid {
+        gap: 3rem;
+    }
+}
+
+/* ========== RESPONSIVE: MÓVIL (≤768px) ========== */
+@media (max-width: 768px) {
+    .sitio-header {
+        padding: 1rem 1.5rem;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .sitio-header.con-fondo {
+        padding: 0.7rem 1.5rem;
+    }
+
+    .nombre-desktop {
+        display: none;
+    }
+
+    .nombre-movil {
+        display: block;
+        text-align: center;
+        font-size: 1.1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .hero-logo {
+        height: 80px;
+        max-height: 80px;
+        max-width: 240px;
+        margin: 0 auto 1rem;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .sitio-nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 75%;
+        max-width: 320px;
+        height: 100vh;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+        background: var(--color-superficie);
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        transition: right var(--transicion-suave);
+    }
+
+    .sitio-nav.abierto {
+        right: 0;
+    }
+
+    .sitio-nav a {
+        font-size: 1.1rem;
+    }
+
+    .seccion {
+        padding: var(--padding-movil);
+    }
+
+    .quienes-grid {
+        flex-direction: column;
+        gap: 2.5rem;
+    }
+
+    .quienes-imagen {
+        min-height: 260px;
+        width: 100%;
+    }
+
+    .proyectos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contacto-email {
+        font-size: 0.95rem;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .footer-grid {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: flex-start;
+    }
+}
