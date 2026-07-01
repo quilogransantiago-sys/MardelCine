@@ -821,6 +821,12 @@ img {
 
     .sitio-nav a {
         font-size: 1.1rem;
+        color: var(--color-texto-secundario);
+    }
+
+    .sitio-nav a:hover,
+    .sitio-nav a.activo {
+        color: var(--color-secundario);
     }
 
     .seccion {
